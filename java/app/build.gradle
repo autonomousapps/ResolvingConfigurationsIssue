@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation project(':lib1')
+    implementation 'com.google.guava:guava:28.0-jre'
+
+    testImplementation 'junit:junit:4.12'
+}
+
+application {
+    mainClassName = 'ResolvingDependenciesTest.Java.App'
+}
+
+configurations.all { conf ->
+    println "conf: $conf.name"
+    conf.incoming.afterResolve { deps ->
+        try {
+            println "Attempting to read the artifacts of configuration $conf.name"
+            def a = deps.artifacts.artifacts
+            println "Successfully read $conf.name. Deps = $a"
+        } catch (Exception e) {
+            System.err.println "Failed to read the artifacts of configuration $conf.name"
+        }
+    }
+}
