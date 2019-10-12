@@ -36,15 +36,9 @@ dependencies {
 
 configurations.all { conf ->
     println "conf: $conf.name"
-//    if (conf.name == 'debugCompileClasspath') {
-        conf.incoming.afterResolve { deps ->
-            try {
-                println "Attempting to read the artifacts of configuration $conf.name"
-                def a = deps.artifacts.artifacts
-                println "Successfully read $conf.name. Deps = $a"
-            } catch (Exception e) {
-                System.err.println "Failed to read the artifacts of configuration $conf.name"
-            }
-        }
-//    }
+    conf.incoming.afterResolve { deps ->
+        println "Attempting to read the artifacts of configuration $conf.name"
+        def a = deps.artifacts.artifacts
+        println "Successfully read $conf.name. Deps = $a"
+    }
 }
